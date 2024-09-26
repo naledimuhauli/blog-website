@@ -1,22 +1,37 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors'); // Import the CORS middleware
 
 const app = express();
-app.use(express.json());  // To parse JSON data from the frontend
+
+// Enable CORS for all routes
+app.use(cors());
+
+// To parse JSON data from the frontend
+app.use(express.json());
 
 // Path to the JSON file where blog posts will be stored
 const postsFilePath = path.join(__dirname, 'posts.json');
 
-// Read posts from the JSON file
+// Read posts from the JSON file with error handling
 function getPosts() {
-    const postsData = fs.readFileSync(postsFilePath);
-    return JSON.parse(postsData);
+    try {
+        const postsData = fs.readFileSync(postsFilePath, 'utf-8');
+        return JSON.parse(postsData);
+    } catch (error) {
+        console.error('Error reading posts file:', error);
+        return []; // Return an empty array if there's an error
+    }
 }
 
-// Write posts to the JSON file
+// Write posts to the JSON file with error handling
 function savePosts(posts) {
-    fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2));
+    try {
+        fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
+    } catch (error) {
+        console.error('Error writing to posts file:', error);
+    }
 }
 
 // Route to fetch all blog posts
