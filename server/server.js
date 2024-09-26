@@ -1,10 +1,8 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const cors = require('cors');
 
 const app = express();
-app.use(cors());  // To allow CORS (cross-origin requests)
 app.use(express.json());  // To parse JSON data from the frontend
 
 // Path to the JSON file where blog posts will be stored
