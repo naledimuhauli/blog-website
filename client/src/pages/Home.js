@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/hero';
+import About from '../components/About';
 
 function Home() {
     const [posts, setPosts] = useState([]);
@@ -35,9 +36,10 @@ function Home() {
     }
 
     return (
-        <div>
+        <div className='homepage'>
             <Hero />
-            <h1>Blog Posts</h1>
+            <About />
+            <h1 className='blog'>Featured Posts Section</h1>
             {posts.length === 0 ? (  // Show message if no posts are available
                 <p>No posts available. <Link to="/new-post">Create the first post</Link></p>
             ) : (
