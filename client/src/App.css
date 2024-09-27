@@ -1,0 +1,45 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.background {
+  background-image: url(./images/background.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 250px;
+  background-position: 10;
+  height: 100%;
+  /* margin: 50px; */
+  filter: blur(4px);
+  border: 1px solid black;
+}
+
+.content {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 45%;
+  padding: 40px 0;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #990404;
+  font-weight: bold;
+  border: 15px inset #fff;
+}
+
+.content .heading {
+  font-size: 50px;
+}
+
+.content p {
+  padding: 0 8%;
+  line-height: 2;
+  color: #fcf8f8;
+  font-size: 20px;
+}
