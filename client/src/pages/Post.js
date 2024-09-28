@@ -39,13 +39,13 @@ function Post() {
         <div className="container containers">
             <div className="post">
                 <h1 className='post-h1'>{post.title}</h1>
-                <p className='post-p'>{post.content}</p>
+                <p className='post-description'>{post.description}</p>
                 <div className="row">
                     <div className="col-md-6">
                         <img src={getImage(post.image)} alt={post.title} className="img-fluid post-img" />
                     </div>
                     <div className="col-md-6">
-                        <p className='post-description'>{post.description}</p>
+                        <p className='post-p'>{post.content}</p>
                     </div>
                 </div>
                 <button onClick={handleDelete} className="btn btn-danger mt-3">Delete Post</button>
