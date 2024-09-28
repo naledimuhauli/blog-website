@@ -68,7 +68,7 @@ function Home() {
                     </div>
 
                     {/* Space between Sidebar and Posts */}
-                    <div className='col-12 col-md-1'></div> {/* Adjust width if necessary */}
+                    <div className='col-12 col-md-1'></div>
 
                     {/* Main Content (Posts) with increased width */}
                     <div className='col-12 col-md-8 col-lg-9'>
