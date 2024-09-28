@@ -46,7 +46,6 @@ function Home() {
     return (
         <div className='homepage'>
             <Hero />
-
             <h1 className='blog'>Vogue Vibes <strong>Blog</strong></h1>
 
             <div className='container'>
@@ -55,27 +54,30 @@ function Home() {
                     <div className='col-12 col-md-3 col-lg-2 sidebar'>
                         <h2 className='categories-h1'>Categories</h2>
                         <div className='categories'>
-                            <h3 className='category'> Fashion</h3>
-                            <img src={fashion} style={{ width: '150px', height: '150px' }} />
+                            <h3 className='category'>Fashion</h3>
+                            <img src={fashion} style={{ width: '150px', height: '150px' }} alt="Fashion" />
                         </div>
                         <div className='categories'>
-                            <h3 className='category'> Beauty</h3>
-                            <img src={beauty} style={{ width: '150px', height: '150px' }} />
+                            <h3 className='category'>Beauty</h3>
+                            <img src={beauty} style={{ width: '150px', height: '150px' }} alt="Beauty" />
                         </div>
                         <div className='categories'>
                             <h3 className='category'>Lifestyle</h3>
-                            <img src={skincare} style={{ width: '150px', height: '150px' }} />
+                            <img src={skincare} style={{ width: '150px', height: '150px' }} alt="Lifestyle" />
                         </div>
                     </div>
 
+                    {/* Space between Sidebar and Posts */}
+                    <div className='col-12 col-md-1'></div> {/* Adjust width if necessary */}
+
                     {/* Main Content (Posts) with increased width */}
-                    <div className='col-12 col-md-9 col-lg-10'>
+                    <div className='col-12 col-md-8 col-lg-9'>
                         {posts.length === 0 ? (
                             <p>No posts available. <Link to="/new-post">Create the first post</Link></p>
                         ) : (
                             <div className='row'>
                                 {posts.map((post) => (
-                                    <div className='col-12 col-md-6 col-lg-4' key={post.id}>
+                                    <div className='col-12 col-md-6 col-lg-4 mb-4' key={post.id}>
                                         <div className='post-card'>
                                             <img src={getImage(post.image)} alt={post.title} className='blog-img' />
                                             <h3 className='blog-h1'>{post.title}</h3>
@@ -89,8 +91,9 @@ function Home() {
                                 ))}
                             </div>
                         )}
-                        <Link to="/new-post" >
-                            <button className='new-post'>Create New Post</button></Link>
+                        <Link to="/new-post">
+                            <button className='new-post'>Create New Post</button>
+                        </Link>
                     </div>
                 </div>
             </div>
