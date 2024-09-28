@@ -16,5 +16,23 @@
     "title": "How to Accessorize ",
     "content": "Learn how to add the right accessories to transform any outfit, whether casual or formal.",
     "image": "blog3.jpg"
+  },
+  {
+    "id": "4",
+    "title": "Summer to Fall Transition",
+    "content": "Get tips on how to seamlessly transition your wardrobe from summer to fall with layering techniques.",
+    "image": "blog5.jpg"
+  },
+  {
+    "id": "5",
+    "title": "Beauty Essentials for Every Season",
+    "content": "Find out which beauty products you should always have on hand, no matter the time of year.",
+    "image": "blog4.jpg"
+  },
+  {
+    "id": "6",
+    "title": "Healthy Habits for a Balanced Lifestyle",
+    "content": "Explore lifestyle habits that can help you maintain a healthy and balanced life in a busy world.",
+    "image": "blog6.jpg"
   }
 ]

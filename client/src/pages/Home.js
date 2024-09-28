@@ -81,7 +81,7 @@ function Home() {
                                             <h3 className='blog-h1'>{post.title}</h3>
                                             <p className='blog-p'>{post.content}
                                                 <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: "black" }}>
-                                                    View More..
+                                                    Read More..
                                                 </Link>
                                             </p>
                                         </div>
@@ -89,7 +89,8 @@ function Home() {
                                 ))}
                             </div>
                         )}
-                        <Link to="/new-post">Create New Post</Link>
+                        <Link to="/new-post" >
+                            <button className='new-post'>Create New Post</button></Link>
                     </div>
                 </div>
             </div>

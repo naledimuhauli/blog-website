@@ -12,8 +12,8 @@
 }
 
 .blog-img {
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
     border-radius: 30px;
     display: block;
     margin: auto;
@@ -21,18 +21,20 @@
 }
 
 .homepage .blog-h1 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 10px;
     font-family: poppins;
     font-weight: 600;
+    margin-left: 30px;
 
 }
 
 .homepage .blog-p {
     font-weight: 500;
     color: rgb(95, 94, 94);
-    font-size: 18px;
-    margin-left: 10px;
+    font-size: 16px;
+    margin-left: 30px;
+    margin-bottom: 50px;
 }
 
 .homepage .blog-btn {
@@ -59,4 +61,14 @@
 .categories .category {
     font-size: 25px;
     color: rgb(95, 94, 94);
+}
+
+.new-post {
+    border: 1px soild gray;
+    color: #0c0c0c;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(66, 66, 66, 0.5);
 }
