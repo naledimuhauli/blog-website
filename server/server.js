@@ -58,10 +58,26 @@ app.post('/api/posts', (req, res) => {
         id: String(posts.length + 1),  // Create a new id based on the length
         title: req.body.title,
         content: req.body.content,
+        image: req.body.image,         // If you need to handle an image
+        description: req.body.description // For description handling
     };
     posts.push(newPost);
     savePosts(posts);
     res.status(201).json(newPost);
+});
+
+// Route to delete a post by id
+app.delete('/api/posts/:id', (req, res) => {
+    let posts = getPosts();
+    const postIndex = posts.findIndex((p) => p.id === req.params.id);
+
+    if (postIndex !== -1) {
+        posts.splice(postIndex, 1);  // Remove the post
+        savePosts(posts);            // Save the updated posts list
+        res.status(200).json({ message: 'Post deleted successfully' });
+    } else {
+        res.status(404).json({ message: 'Post not found' });
+    }
 });
 
 // Start the server
