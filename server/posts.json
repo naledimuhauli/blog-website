@@ -1,17 +1,20 @@
 [
   {
     "id": "1",
-    "title": "Top 5 Fall Fashion Trends to Try This Season",
-    "content": "Discover the must-have pieces for your fall wardrobe, from cozy knits to statement boots."
+    "title": " Fall Fashion Trends ",
+    "content": "Discover the must-have pieces for your fall wardrobe, from cozy knits to statement boots.",
+    "image": "blog1.jpg"
   },
   {
     "id": "2",
-    "title": "Glow Like a Pro: Skincare Tips for Radiant Skin",
-    "content": "Get expert advice on achieving that perfect, natural glow with a skincare routine that works for you."
+    "title": "Glow Like a Pro ",
+    "content": "Get expert advice on achieving that perfect, natural glow with a skincare routine that works for you.",
+    "image": "blog2.jpg"
   },
   {
     "id": "3",
-    "title": "How to Accessorize: Elevate Your Outfit with These Key Pieces",
-    "content": "Learn how to add the right accessories to transform any outfit, whether casual or formal."
+    "title": "How to Accessorize ",
+    "content": "Learn how to add the right accessories to transform any outfit, whether casual or formal.",
+    "image": "blog3.jpg"
   }
 ]

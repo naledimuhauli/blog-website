@@ -6,11 +6,15 @@ body {
   box-sizing: border-box;
 }
 
+.hero {
+  background-color: #fff;
+}
+
 .background {
   background-image: url(./images/background.gif);
   background-size: cover;
   background-repeat: no-repeat;
-  padding: 250px;
+  padding: 280px;
   background-position: 10;
   height: 100%;
   /* margin: 50px; */
@@ -31,6 +35,7 @@ body {
   color: #990404;
   font-weight: bold;
   border: 15px inset #fff;
+  font-family: poppins;
 }
 
 .content .heading {
@@ -81,4 +86,10 @@ body {
   }
 
 
+}
+
+.about-section {
+  background-color: #cfcece;
+  padding: 50px;
+  text-align: center;
 }
