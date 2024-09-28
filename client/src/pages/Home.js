@@ -81,7 +81,7 @@ function Home() {
                                         <div className='post-card'>
                                             <img src={getImage(post.image)} alt={post.title} className='blog-img' />
                                             <h3 className='blog-h1'>{post.title}</h3>
-                                            <p className='blog-p'>{post.content}
+                                            <p className='blog-p'>{post.description}
                                                 <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: "black" }}>
                                                     Read More..
                                                 </Link>

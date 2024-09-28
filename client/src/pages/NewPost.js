@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 function NewPost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    // const [image, setImage] = useState('');
+    const [description, setDescription] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -22,7 +24,7 @@ function NewPost() {
     };
 
     return (
-        <div>
+        <div className='new-post'>
             <h1>Create New Post</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -32,10 +34,16 @@ function NewPost() {
                     onChange={(e) => setTitle(e.target.value)}
                 />
                 <textarea
+                    placeholder="decription"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                ></textarea>
+                <textarea
                     placeholder="Content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                 ></textarea>
+
                 <button type="submit">Submit</button>
             </form>
         </div>
