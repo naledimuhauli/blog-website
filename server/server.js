@@ -80,6 +80,35 @@ app.delete('/api/posts/:id', (req, res) => {
     }
 });
 
+// Route to add a comment to a post
+app.post('/api/posts/:id/comments', (req, res) => {
+    const { id } = req.params;
+    const { username, comment } = req.body;
+    const posts = getPosts();
+
+    // Find the post by id
+    const post = posts.find((p) => p.id === id);
+    if (!post) {
+        return res.status(404).send('Post not found');
+    }
+
+    // Create a new comment
+    const newComment = {
+        username,
+        comment,
+        date: new Date().toISOString().split('T')[0] // Get the current date in YYYY-MM-DD format
+    };
+
+    // Add the comment to the post
+    post.comments.push(newComment);
+
+    // Save the updated posts array
+    savePosts(posts);
+
+    res.status(201).json(newComment);
+});
+
+
 // Start the server
 const PORT = 5000;
 app.listen(PORT, () => {

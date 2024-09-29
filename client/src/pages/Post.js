@@ -8,6 +8,9 @@ function Post() {
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [username, setUsername] = useState('');
 
     // Helper function to dynamically import images
     const getImage = (imageName) => {
@@ -19,15 +22,12 @@ function Post() {
     };
 
     useEffect(() => {
+        // Fetch the post data
         fetch(`http://localhost:5000/api/posts/${id}`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
+            .then((res) => res.json())
             .then((data) => {
                 setPost(data);
+                setComments(data.comments || []);
                 setLoading(false);
             })
             .catch((error) => {
@@ -37,23 +37,22 @@ function Post() {
             });
     }, [id]);
 
-    const handleDelete = () => {
-        if (window.confirm('Are you sure you want to delete this post?')) {
-            fetch(`http://localhost:5000/api/posts/${id}`, {
-                method: 'DELETE',
+    const handleCommentSubmit = (e) => {
+        e.preventDefault();
+
+        // Send a POST request to add the new comment
+        fetch(`http://localhost:5000/api/posts/${id}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, comment: newComment }),
+        })
+            .then((res) => res.json())
+            .then((newComment) => {
+                setComments([...comments, newComment]);  // Add the new comment to the list
+                setNewComment('');  // Clear the comment input field
+                setUsername('');    // Clear the username input field
             })
-                .then((res) => {
-                    if (!res.ok) {
-                        throw new Error('Failed to delete post');
-                    }
-                    return res.json();
-                })
-                .then((data) => {
-                    console.log(data.message);  // Success message
-                    navigate('/');  // Navigate back to the main page after deleting the post
-                })
-                .catch((error) => console.error('Error deleting post:', error));
-        }
+            .catch((error) => console.error('Error adding comment:', error));
     };
 
     if (loading) {
@@ -71,7 +70,6 @@ function Post() {
                 <p className='post-description'>{post.description}</p>
 
                 <div className="row">
-                    {/* Conditionally render image only if it exists */}
                     {post.image && (
                         <div className="col-md-6">
                             <img
@@ -87,7 +85,40 @@ function Post() {
                     </div>
                 </div>
 
-                <button onClick={handleDelete} className="btn btn-danger mt-3">Delete Post</button>
+                {/* Comments Section */}
+                <div className="comments-section">
+                    <h2>Comments</h2>
+                    {comments.length === 0 ? (
+                        <p>No comments yet. Be the first to comment!</p>
+                    ) : (
+                        <ul className="comments-list">
+                            {comments.map((comment, index) => (
+                                <li key={index} className="comment-item">
+                                    <strong>{comment.username}</strong>: {comment.comment}
+                                    <div><small>{comment.date}</small></div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    {/* Add Comment Form */}
+                    <form onSubmit={handleCommentSubmit} className="comment-form">
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                        <textarea
+                            placeholder="Write a comment..."
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            required
+                        ></textarea>
+                        <button type="submit" className="btn btn-primary">Add Comment</button>
+                    </form>
+                </div>
             </div>
         </div>
     );

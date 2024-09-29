@@ -119,6 +119,37 @@
     font-family: poppins;
 }
 
+.comments-section {
+    margin-top: 2rem;
+}
+
+.comments-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.comment-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.comment-form {
+    margin-top: 1.5rem;
+}
+
+.comment-form input,
+.comment-form textarea {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
 .form {
     background-color: rgb(211, 210, 210);
     max-width: 100%;
@@ -148,18 +179,31 @@
     padding: 5px 20px;
     border-radius: 10px;
     margin-top: 20px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
 }
 
 .new-post-description {
-    padding: 5px 60px;
+    /* padding: 5px 60px;
     border-radius: 10px;
-    margin-top: 20px;
+    margin-top: 20px; */
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .new-post-content {
-    border-radius: 10px;
+    /* border-radius: 10px;
     padding: 50px 250px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-bottom: 40px;
 }
 
 .submit {
