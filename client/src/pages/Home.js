@@ -13,7 +13,11 @@ function Home() {
 
     // Helper function to dynamically import images
     const getImage = (imageName) => {
-        return `/images/${imageName}`;  // Assuming images are stored in 'public/images'
+        if (imageName?.startsWith('data:image')) {
+            return imageName; // For base64 images
+        } else {
+            return `/images/${imageName}`;  // For images stored in public/images folder
+        }
     };
 
     useEffect(() => {
@@ -79,9 +83,18 @@ function Home() {
                                 {posts.map((post) => (
                                     <div className='col-12 col-md-6 col-lg-4 mb-4' key={post.id}>
                                         <div className='post-card'>
-                                            <img src={getImage(post.image)} alt={post.title} className='blog-img' />
+                                            {/* Render image only if post.image exists */}
+                                            {post.image && (
+                                                <img
+                                                    src={getImage(post.image)}
+                                                    alt={post.title}
+                                                    className='blog-img'
+                                                    style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                                                />
+                                            )}
                                             <h3 className='blog-h1'>{post.title}</h3>
-                                            <p className='blog-p'>{post.description}
+                                            <p className='blog-p'>
+                                                {post.description}
                                                 <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: "black" }}>
                                                     Read More..
                                                 </Link>
