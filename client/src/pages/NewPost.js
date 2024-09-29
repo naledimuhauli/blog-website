@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './pages.css';
 
 function NewPost() {
     const [title, setTitle] = useState('');
@@ -40,47 +41,53 @@ function NewPost() {
     };
 
     return (
-        <div className="new-post">
-            <h1>Create New Post</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                ></textarea>
-                <textarea
-                    placeholder="Content"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-
-                <div className="mb-3">
-                    <label htmlFor="formFile" className="form-label">Upload Image</label>
+        <div className="form">
+            <div className="new-posts">
+                <h1 className='new-post-h1'>Create New Post</h1>
+                <form onSubmit={handleSubmit}>
                     <input
-                        className="form-control"
-                        type="file"
-                        id="formFile"
-                        accept="image/*" // Only accept image files
-                        onChange={handleImageChange} // Handle image change
+                        type="text"
+                        placeholder="Title"
+                        value={title}
+                        className='new-post-title'
+                        onChange={(e) => setTitle(e.target.value)}
                     />
-                </div>
+                    <textarea
+                        placeholder="Description"
+                        value={description}
+                        className='new-post-description'
+                        onChange={(e) => setDescription(e.target.value)}
+                    ></textarea>
+                    <br />
+                    <textarea
+                        placeholder="Content"
+                        value={content}
+                        className='new-post-content'
+                        onChange={(e) => setContent(e.target.value)}
+                    ></textarea>
 
-                {/* Display image preview if available */}
-                {imagePreview && (
-                    <div className="image-preview">
-                        <h4>Image Preview:</h4>
-                        <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+                    <div className="mb-3">
+                        <label htmlFor="formFile" className="form-label">Upload Image</label>
+                        <input
+                            className="form-control media"
+                            type="file"
+                            id="formFile"
+                            accept="image/*" // Only accept image files
+                            onChange={handleImageChange} // Handle image change
+                        />
                     </div>
-                )}
 
-                <button type="submit">Submit</button>
-            </form>
+                    {/* Display image preview if available */}
+                    {imagePreview && (
+                        <div className="image-preview">
+                            <h4>Image Preview:</h4>
+                            <img src={imagePreview} alt="Preview" style={{ maxWidth: '350px', height: 'auto' }} />
+                        </div>
+                    )}
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </div>
     );
 }

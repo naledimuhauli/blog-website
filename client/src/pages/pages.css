@@ -118,3 +118,38 @@
     color: black;
     font-family: poppins;
 }
+
+.form {
+    background-color: rgb(211, 210, 210);
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.form .new-posts {
+    max-width: 900px;
+    margin: 20px;
+    padding: 50px;
+    display: block;
+    margin: auto;
+    align-items: center;
+    border: 1px solid white;
+}
+
+.form .new-post-h1 {
+    font-size: 50px;
+    font-family: poppins;
+    color: black;
+    text-align: center;
+}
+
+.new-post-title {
+    padding: 5px 20px;
+    border-radius: 10px;
+    margin: 10px 100px 50px 0;
+}
+
+.new-post-description {
+    padding: 10px 50px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
