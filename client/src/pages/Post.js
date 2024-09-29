@@ -55,6 +55,32 @@ function Post() {
             .catch((error) => console.error('Error adding comment:', error));
     };
 
+    const handleDeleteComment = (index) => {
+        // Send a DELETE request to remove the comment
+        fetch(`http://localhost:5000/api/posts/${id}/comments/${index}`, {
+            method: 'DELETE',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data.message);  // Show success message
+                setComments(comments.filter((_, i) => i !== index));  // Remove the comment locally
+            })
+            .catch((error) => console.error('Error deleting comment:', error));
+    };
+
+    const handleDeletePost = () => {
+        // Send a DELETE request to remove the post
+        fetch(`http://localhost:5000/api/posts/${id}`, {
+            method: 'DELETE',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data.message);  // Show success message
+                navigate('/');  // Navigate back to the main page
+            })
+            .catch((error) => console.error('Error deleting post:', error));
+    };
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -96,6 +122,12 @@ function Post() {
                                 <li key={index} className="comment-item">
                                     <strong>{comment.username}</strong>: {comment.comment}
                                     <div><small>{comment.date}</small></div>
+                                    <button
+                                        onClick={() => handleDeleteComment(index)}
+                                        className="btn btn-danger btn-sm"
+                                    >
+                                        Delete Comment
+                                    </button>
                                 </li>
                             ))}
                         </ul>
@@ -118,6 +150,16 @@ function Post() {
                         ></textarea>
                         <button type="submit" className="btn btn-primary">Add Comment</button>
                     </form>
+                </div>
+
+                {/* Delete Post Button */}
+                <div className="delete-post">
+                    <button
+                        onClick={handleDeletePost}
+                        className="btn btn-danger mt-3"
+                    >
+                        Delete Post
+                    </button>
                 </div>
             </div>
         </div>

@@ -108,6 +108,28 @@ app.post('/api/posts/:id/comments', (req, res) => {
     res.status(201).json(newComment);
 });
 
+// Route to delete a comment from a post
+app.delete('/api/posts/:postId/comments/:commentIndex', (req, res) => {
+    const { postId, commentIndex } = req.params;
+    const posts = getPosts();
+
+    // Find the post by id
+    const post = posts.find((p) => p.id === postId);
+    if (!post) {
+        return res.status(404).send('Post not found');
+    }
+
+    // Check if the comment exists
+    if (post.comments[commentIndex]) {
+        post.comments.splice(commentIndex, 1); // Remove the comment by index
+        savePosts(posts);  // Save the updated posts
+        res.status(200).json({ message: 'Comment deleted successfully' });
+    } else {
+        res.status(404).json({ message: 'Comment not found' });
+    }
+});
+
+
 
 // Start the server
 const PORT = 5000;

@@ -89,7 +89,7 @@ function Home() {
                                                     src={getImage(post.image)}
                                                     alt={post.title}
                                                     className='blog-img'
-                                                    style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                                                    style={{ width: '100%', height: '200px' }}
                                                 />
                                             )}
                                             <h3 className='blog-h1'>{post.title}</h3>
