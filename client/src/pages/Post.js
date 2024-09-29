@@ -44,7 +44,7 @@ function Post() {
         fetch(`http://localhost:5000/api/posts/${id}/comments`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, comment: newComment }),
+            body: JSON.stringify({ username, comment: newComment }),  // Send both username and comment
         })
             .then((res) => res.json())
             .then((newComment) => {
@@ -54,6 +54,7 @@ function Post() {
             })
             .catch((error) => console.error('Error adding comment:', error));
     };
+
 
     const handleDeleteComment = (index) => {
         // Send a DELETE request to remove the comment

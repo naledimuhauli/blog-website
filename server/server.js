@@ -81,32 +81,46 @@ app.delete('/api/posts/:id', (req, res) => {
 });
 
 // Route to add a comment to a post
-app.post('/api/posts/:id/comments', (req, res) => {
-    const { id } = req.params;
+app.post('/api/posts/:postId/comments', (req, res) => {
+    const { postId } = req.params;
     const { username, comment } = req.body;
-    const posts = getPosts();
 
-    // Find the post by id
-    const post = posts.find((p) => p.id === id);
-    if (!post) {
-        return res.status(404).send('Post not found');
+    if (!username || !comment) {
+        return res.status(400).json({ message: 'Username and comment are required.' });
     }
 
-    // Create a new comment
-    const newComment = {
-        username,
-        comment,
-        date: new Date().toISOString().split('T')[0] // Get the current date in YYYY-MM-DD format
-    };
+    const posts = getPosts(); // Fetch posts from your data store
+    const post = posts.find((p) => p.id === postId); // Find the post by postId
 
-    // Add the comment to the post
-    post.comments.push(newComment);
+    // Check if the post exists
+    if (post) {
+        // Initialize comments array if it doesn't exist
+        if (!post.comments) {
+            post.comments = [];
+        }
 
-    // Save the updated posts array
-    savePosts(posts);
+        // Create the new comment object
+        const newComment = {
+            username,
+            comment,
+            date: new Date().toLocaleString(),
+        };
 
-    res.status(201).json(newComment);
+        // Push the new comment into the comments array
+        post.comments.push(newComment);
+
+        // Save the updated post (depends on your data storage)
+        savePosts(posts);
+
+        // Return the newly added comment
+        res.status(201).json(newComment);
+    } else {
+        // Return a 404 if the post was not found
+        res.status(404).json({ message: 'Post not found.' });
+    }
 });
+
+
 
 // Route to delete a comment from a post
 app.delete('/api/posts/:postId/comments/:commentIndex', (req, res) => {
