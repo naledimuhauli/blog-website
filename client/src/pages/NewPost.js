@@ -45,19 +45,27 @@ function NewPost() {
             <div className="new-posts">
                 <h1 className='new-post-h1'>Create New Post</h1>
                 <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        value={title}
-                        className='new-post-title'
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <textarea
-                        placeholder="Description"
-                        value={description}
-                        className='new-post-description'
-                        onChange={(e) => setDescription(e.target.value)}
-                    ></textarea>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-6">
+                                <input
+                                    type="text"
+                                    placeholder="Title"
+                                    value={title}
+                                    className='new-post-title'
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </div>
+                            <div className="col-6">
+                                <textarea
+                                    placeholder="Description"
+                                    value={description}
+                                    className='new-post-description'
+                                    onChange={(e) => setDescription(e.target.value)}
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
                     <br />
                     <textarea
                         placeholder="Content"
@@ -85,7 +93,7 @@ function NewPost() {
                         </div>
                     )}
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" className='submit'>Submit</button>
                 </form>
             </div>
         </div>

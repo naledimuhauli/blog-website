@@ -123,16 +123,18 @@
     background-color: rgb(211, 210, 210);
     max-width: 100%;
     max-height: 100%;
+    padding: 100px;
 }
 
 .form .new-posts {
     max-width: 900px;
-    margin: 20px;
+    margin-top: 50px;
     padding: 50px;
     display: block;
     margin: auto;
-    align-items: center;
+    /* align-items: center; */
     border: 1px solid white;
+    box-shadow: 0px 4px 15px rgba(221, 6, 6, 0.5);
 }
 
 .form .new-post-h1 {
@@ -145,11 +147,30 @@
 .new-post-title {
     padding: 5px 20px;
     border-radius: 10px;
-    margin: 10px 100px 50px 0;
+    margin-top: 20px;
 }
 
 .new-post-description {
-    padding: 10px 50px;
-    margin-top: 10px;
+    padding: 5px 60px;
     border-radius: 10px;
+    margin-top: 20px;
+}
+
+.new-post-content {
+    border-radius: 10px;
+    padding: 50px 250px;
+    margin-bottom: 20px;
+}
+
+.submit {
+    color: white;
+    background-color: rgb(168, 168, 168);
+    border: 1px solid rgb(5, 5, 5);
+    box-shadow: 0px 4px 15px rgba(221, 6, 6, 0.5);
+    margin: 10px;
+    padding: 10pxpx;
+    width: 200px;
+    height: 30px;
+
+
 }
