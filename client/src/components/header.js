@@ -11,16 +11,30 @@ const header = () => {
 
                         <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                             <li>
-                                <a href="#categories" className="nav-link px-2 text-white" onClick={(e) => {
-                                    e.preventDefault(); // Prevent default anchor behavior
-                                    document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
-                                }}>Home</a>
+                                <Link
+                                    to="#categories"
+                                    className="nav-link px-2 text-white"
+                                    onClick={(e) => {
+                                        // Prevent default anchor behavior
+                                        e.preventDefault();
+                                        // Scroll to the 'categories' section smoothly
+                                        document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+                                    }}>
+                                    Home
+                                </Link>
                             </li>
                             <li>
-                                <a href="#posts" className="nav-link px-2 text-white" onClick={(e) => {
-                                    e.preventDefault(); // Prevent default anchor behavior
-                                    document.getElementById('posts').scrollIntoView({ behavior: 'smooth' });
-                                }}>Posts</a>
+                                <Link
+                                    to="#posts"
+                                    className="nav-link px-2 text-white"
+                                    onClick={(e) => {
+                                        // Prevent default anchor behavior
+                                        e.preventDefault();
+                                        // Scroll to the 'posts' section smoothly
+                                        document.getElementById('posts').scrollIntoView({ behavior: 'smooth' });
+                                    }}>
+                                    Posts
+                                </Link>
                             </li>
                             <li><Link to="/new-post" className="nav-link px-2 text-white">Create new blog</Link></li>
                         </ul>
