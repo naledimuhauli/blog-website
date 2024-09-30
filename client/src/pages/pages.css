@@ -2,6 +2,11 @@
     background-color: rgb(243, 242, 242);
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+
 .homepage .blog {
     font-size: 50px;
     margin: 30px 0 40px 0;

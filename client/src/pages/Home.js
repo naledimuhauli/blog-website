@@ -13,19 +13,13 @@ function Home() {
 
     // Helper function to dynamically import images
     const getImage = (imageName) => {
-        if (imageName?.startsWith('data:image')) {
-            return imageName; // For base64 images
-        } else {
-            return `/images/${imageName}`;  // For images stored in public/images folder
-        }
+        return imageName?.startsWith('data:image') ? imageName : `/images/${imageName}`;  // For images stored in public/images folder
     };
 
     useEffect(() => {
         fetch('http://localhost:5000/api/posts')
             .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
             })
             .then((data) => {
@@ -39,18 +33,17 @@ function Home() {
             });
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className='homepage'>
             <Hero />
-            <h1 className='blog'>Vogue Vibes <strong>Blog</strong></h1>
+            <h1 className='blog' id="categories">Vogue Vibes <strong>Blog</strong></h1>
+
+
+
+
 
             <div className='container'>
                 <div className='row'>
@@ -59,15 +52,15 @@ function Home() {
                         <h2 className='categories-h1'>Categories</h2>
                         <div className='categories'>
                             <h3 className='category'>Fashion</h3>
-                            <img src={fashion} style={{ width: '150px', height: '150px' }} alt="Fashion" />
+                            <img src={fashion} style={{ width: '150px', height: '150px' }} alt="Fashion category" />
                         </div>
                         <div className='categories'>
                             <h3 className='category'>Beauty</h3>
-                            <img src={beauty} style={{ width: '150px', height: '150px' }} alt="Beauty" />
+                            <img src={beauty} style={{ width: '150px', height: '150px' }} alt="Beauty category" />
                         </div>
                         <div className='categories'>
                             <h3 className='category'>Lifestyle</h3>
-                            <img src={skincare} style={{ width: '150px', height: '150px' }} alt="Lifestyle" />
+                            <img src={skincare} style={{ width: '150px', height: '150px' }} alt="Lifestyle category" />
                         </div>
                     </div>
 
@@ -75,7 +68,7 @@ function Home() {
                     <div className='col-12 col-md-1'></div>
 
                     {/* Main Content (Posts) with increased width */}
-                    <div className='col-12 col-md-8 col-lg-9'>
+                    <div id="posts" className='col-12 col-md-8 col-lg-9'>
                         {posts.length === 0 ? (
                             <p>No posts available. <Link to="/new-post">Create the first post</Link></p>
                         ) : (
@@ -83,7 +76,6 @@ function Home() {
                                 {posts.map((post) => (
                                     <div className='col-12 col-md-6 col-lg-4 mb-4' key={post.id}>
                                         <div className='post-card'>
-                                            {/* Render image only if post.image exists */}
                                             {post.image && (
                                                 <img
                                                     src={getImage(post.image)}
