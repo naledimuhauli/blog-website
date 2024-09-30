@@ -52,12 +52,12 @@ body {
 @media (max-width: 900px) {
   .content {
     position: absolute;
-    top: 65%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1.5;
     width: 45%;
-    padding: 40px 30;
+    padding: 10px;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.5);
     color: #990404;
@@ -83,6 +83,37 @@ body {
     /* margin: 50px; */
     filter: blur(4px);
     border: 1px solid black;
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      width: 70%;
+      top: 30%;
+      padding: 30px 0;
+      border-width: 10px;
+    }
+
+    .content .heading {
+      font-size: 30px;
+    }
+
+    .content p {
+      font-size: 20px;
+    }
+  }
+
+  /* Styling for small-sized devices (mobile phones) */
+  @media (max-width: 480px) {
+    .content {
+      width: 90%;
+      /* Full width on smaller screens */
+      padding: 20px 0;
+      /* Less padding for compact look */
+      font-size: 14px;
+      /* Reduce font size */
+      border-width: 8px;
+      /* Thinner border */
+    }
   }
 
 
