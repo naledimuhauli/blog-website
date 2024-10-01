@@ -1,15 +1,19 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const cors = require('cors'); // Import the CORS middleware
+const cors = require('cors'); //  A middleware that allows cross-origin requests from the frontend.
 
 const app = express();
+//Initializes an Express application.
 
-// Enable CORS for all routes
+
 app.use(cors());
+// Enables CORS for all routes so that the frontend can communicate with the backend from a different domain.
 
-// Middleware to parse JSON data from the frontend
+
 app.use(express.json());
+// This middleware parses incoming JSON requests, allowing the app to process JSON data sent from the frontend.
+
 
 // Path to the JSON file where blog posts will be stored
 const postsFilePath = path.join(__dirname, 'posts.json');
