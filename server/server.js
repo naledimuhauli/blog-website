@@ -1,171 +1,123 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const cors = require('cors'); //  A middleware that allows cross-origin requests from the frontend.
-
+const cors = require('cors'); // A middleware that allows cross-origin requests from the frontend.
+const mysql = require('mysql2'); // Importing mysql2 for database connection
 const app = express();
-//Initializes an Express application.
 
+// Initializes an Express application
+app.use(cors()); // Enables CORS for all routes so that the frontend can communicate with the backend from a different domain
+app.use(express.json()); // This middleware parses incoming JSON requests, allowing the app to process JSON data sent from the frontend
 
-app.use(cors());
-// Enables CORS for all routes so that the frontend can communicate with the backend from a different domain.
+// Create a MySQL connection pool
+const db = mysql.createPool({
+    host: 'localhost', // Replace with your MySQL host
+    user: 'root', // Replace with your MySQL user
+    password: 'Naledim.130305', // Replace with your MySQL password
+    database: 'blog_website', // Replace with your MySQL database name
+});
 
-
-app.use(express.json());
-// This middleware parses incoming JSON requests, allowing the app to process JSON data sent from the frontend.
-
-
-// Path to the JSON file where blog posts will be stored
-const postsFilePath = path.join(__dirname, 'posts.json');
-
-// Function to read posts from the JSON file with error handling
-function getPosts() {
-    try {
-        // Read the posts.json file and return the parsed data
-        const postsData = fs.readFileSync(postsFilePath, 'utf-8');
-        return JSON.parse(postsData);
-    } catch (error) {
-        console.error('Error reading posts file:', error);
-        // Return an empty array if there's an error
-        return [];
-    }
-}
-
-// Function to write posts to the JSON file with error handling
-function savePosts(posts) {
-    try {
-        // Write the posts array to posts.json, with indentation for readability
-        fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
-    } catch (error) {
-        console.error('Error writing to posts file:', error);
-    }
-}
-
-// Route to fetch all blog posts
+// Route to fetch all blog posts from MySQL
 app.get('/api/posts', (req, res) => {
-    // Fetch all posts and send them as JSON
-    const posts = getPosts();
-    res.json(posts);
+    const query = 'SELECT * FROM posts'; // SQL query to fetch all posts
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching posts:', err);
+            return res.status(500).json({ error: 'Failed to fetch posts' });
+        }
+        res.json(results);
+    });
 });
 
-// Route to get a specific post by id
+// Route to get a specific post by id from MySQL
 app.get('/api/posts/:id', (req, res) => {
-    // Fetch all posts
-    const posts = getPosts();
-    // Find the post with the requested id
-    const post = posts.find((p) => p.id === req.params.id);
-    // If found, return the post, otherwise send a 404 error
-    if (post) {
-        res.json(post);
-    } else {
-        res.status(404).send('Post not found');
-    }
+    const postId = req.params.id;
+    const query = 'SELECT * FROM posts WHERE id = ?'; // SQL query to fetch a specific post by id
+    db.query(query, [postId], (err, result) => {
+        if (err) {
+            console.error('Error fetching post:', err);
+            return res.status(500).json({ error: 'Failed to fetch post' });
+        }
+        if (result.length > 0) {
+            res.json(result[0]);
+        } else {
+            res.status(404).json({ message: 'Post not found' });
+        }
+    });
 });
 
-// Route to create a new post
+// Route to create a new post in MySQL
 app.post('/api/posts', (req, res) => {
-    // Fetch all posts
-    const posts = getPosts();
-    // Create a new post object
-    const newPost = {
-        id: String(posts.length + 1),  // Create a new id based on the number of posts
-        title: req.body.title,          // Title sent from the frontend
-        content: req.body.content,      // Content sent from the frontend
-        image: req.body.image,          // Image sent from the frontend (optional)
-        description: req.body.description // Description sent from the frontend (optional)
-    };
-    // Add the new post to the posts array
-    posts.push(newPost);
-    // Save the updated posts array back to the file
-    savePosts(posts);
-    // Respond with the new post and 201 (Created) status
-    res.status(201).json(newPost);
+    const { title, content, image, description } = req.body;
+    const query = 'INSERT INTO posts (title, content, image, description) VALUES (?, ?, ?, ?)'; // SQL query to insert a new post
+    db.query(query, [title, content, image, description], (err, result) => {
+        if (err) {
+            console.error('Error creating post:', err);
+            return res.status(500).json({ error: 'Failed to create post' });
+        }
+        const newPost = { id: result.insertId, title, content, image, description }; // Respond with the created post
+        res.status(201).json(newPost);
+    });
 });
 
-// Route to delete a post by id
+// Route to delete a post by id from MySQL
 app.delete('/api/posts/:id', (req, res) => {
-    // Fetch all posts
-    let posts = getPosts();
-    // Find the index of the post to delete
-    const postIndex = posts.findIndex((p) => p.id === req.params.id);
-
-    // If the post is found, delete it from the array
-    if (postIndex !== -1) {
-        posts.splice(postIndex, 1);  // Remove the post
-        savePosts(posts);            // Save the updated posts list
-        // Respond with success message
-        res.status(200).json({ message: 'Post deleted successfully' });
-    } else {
-        // If the post is not found, respond with a 404 error
-        res.status(404).json({ message: 'Post not found' });
-    }
+    const postId = req.params.id;
+    const query = 'DELETE FROM posts WHERE id = ?'; // SQL query to delete a post by id
+    db.query(query, [postId], (err, result) => {
+        if (err) {
+            console.error('Error deleting post:', err);
+            return res.status(500).json({ error: 'Failed to delete post' });
+        }
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Post deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Post not found' });
+        }
+    });
 });
 
-// Route to add a comment to a post
+// Route to add a comment to a post in MySQL
 app.post('/api/posts/:postId/comments', (req, res) => {
-    const { postId } = req.params;  // Get the postId from the URL params
-    const { username, comment } = req.body;  // Get username and comment from the request body
+    const { postId } = req.params; // Get postId from the URL
+    const { username, comment } = req.body; // Get username and comment from the request body
 
-    // Check if both username and comment are provided
+    // Validate that both username and comment are provided
     if (!username || !comment) {
         return res.status(400).json({ message: 'Username and comment are required.' });
     }
 
-    // Fetch all posts
-    const posts = getPosts();
-    // Find the post with the provided postId
-    const post = posts.find((p) => p.id === postId);
+    // SQL query to insert a comment
+    const query = 'INSERT INTO comments (post_id, username, comment, date) VALUES (?, ?, ?, NOW())';
+    // Use NOW() to let the database handle the current timestamp
 
-    // Check if the post exists
-    if (post) {
-        // Initialize the comments array if it doesn't exist
-        if (!post.comments) {
-            post.comments = [];
+    // Execute the query and pass the postId, username, and comment
+    db.query(query, [postId, username, comment], (err, result) => {
+        if (err) {
+            console.error('Error adding comment:', err);
+            return res.status(500).json({ error: 'Failed to add comment' });
         }
 
-        // Create a new comment object with the current date
-        const newComment = {
-            username,  // Username from request body
-            comment,   // Comment from request body
-            date: new Date().toLocaleString(),  // Current date and time
-        };
-
-        // Add the new comment to the post's comments array
-        post.comments.push(newComment);
-        // Save the updated posts array back to the file
-        savePosts(posts);
-        // Respond with the newly added comment
+        // Respond with the newly created comment, including the auto-generated id
+        const newComment = { id: result.insertId, post_id: postId, username, comment, date: new Date() };
         res.status(201).json(newComment);
-    } else {
-        // If the post is not found, respond with a 404 error
-        res.status(404).json({ message: 'Post not found.' });
-    }
+    });
 });
 
-// Route to delete a comment from a post
-app.delete('/api/posts/:postId/comments/:commentIndex', (req, res) => {
-    const { postId, commentIndex } = req.params;  // Get postId and commentIndex from the URL params
-    // Fetch all posts
-    const posts = getPosts();
+// Route to delete a comment by index from MySQL
+app.delete('/api/posts/:postId/comments/:commentId', (req, res) => {
+    const { postId, commentId } = req.params;
 
-    // Find the post by its id
-    const post = posts.find((p) => p.id === postId);
-    if (!post) {
-        // If the post is not found, respond with a 404 error
-        return res.status(404).send('Post not found');
-    }
-
-    // Check if the comment exists in the comments array
-    if (post.comments[commentIndex]) {
-        // Remove the comment from the array using splice
-        post.comments.splice(commentIndex, 1);  // Remove the comment by index
-        savePosts(posts);  // Save the updated posts array
-        // Respond with success message
-        res.status(200).json({ message: 'Comment deleted successfully' });
-    } else {
-        // If the comment is not found, respond with a 404 error
-        res.status(404).json({ message: 'Comment not found' });
-    }
+    const query = 'DELETE FROM comments WHERE id = ? AND post_id = ?'; // SQL query to delete a comment by id and postId
+    db.query(query, [commentId, postId], (err, result) => {
+        if (err) {
+            console.error('Error deleting comment:', err);
+            return res.status(500).json({ error: 'Failed to delete comment' });
+        }
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Comment deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Comment not found' });
+        }
+    });
 });
 
 // Start the server on port 5000
