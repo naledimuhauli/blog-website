@@ -45,18 +45,40 @@ app.get('/api/posts/:id', (req, res) => {
 });
 
 // Route to create a new post in MySQL
+// Route to create a new post
 app.post('/api/posts', (req, res) => {
-    const { title, content, image, description } = req.body;
-    const query = 'INSERT INTO posts (title, content, image, description) VALUES (?, ?, ?, ?)'; // SQL query to insert a new post
-    db.query(query, [title, content, image, description], (err, result) => {
+    const { title, content } = req.body; // Get title and content from the request body
+
+    // Validate input
+    if (!title || !content) {
+        return res.status(400).json({ message: 'Title and content are required.' });
+    }
+
+    // MySQL query to insert the new post
+    const query = 'INSERT INTO posts (title, content) VALUES (?, ?)';
+    db.query(query, [title, content], (err, result) => {
         if (err) {
-            console.error('Error creating post:', err);
-            return res.status(500).json({ error: 'Failed to create post' });
+            console.error('Error inserting post:', err);
+            return res.status(500).json({ message: 'Error creating post' });
         }
-        const newPost = { id: result.insertId, title, content, image, description }; // Respond with the created post
-        res.status(201).json(newPost);
+
+        // Respond with the new post's ID and created_at timestamp
+        res.status(201).json({ id: result.insertId, title, content, created_at: new Date() });
     });
 });
+
+// Route to fetch all blog posts
+app.get('/api/posts', (req, res) => {
+    const query = 'SELECT * FROM posts ORDER BY created_at DESC';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching posts:', err);
+            return res.status(500).json({ message: 'Error fetching posts' });
+        }
+        res.json(results);
+    });
+});
+
 
 // Route to delete a post by id from MySQL
 app.delete('/api/posts/:id', (req, res) => {
@@ -121,7 +143,7 @@ app.delete('/api/posts/:postId/comments/:commentId', (req, res) => {
 });
 
 // Start the server on port 5000
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
