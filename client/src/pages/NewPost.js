@@ -3,41 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import './pages.css';
 
 function NewPost() {
-    // State to manage the post's title, content, description, and the uploaded image
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState(null);  // Base64-encoded image string to be sent to the backend
+    const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState('');
     const navigate = useNavigate();
 
-    // Function to handle file selection and convert it to base64 for image upload
     const handleImageChange = (e) => {
-        const file = e.target.files[0];  // Get the first file selected by the user
-
+        const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();  // Create a FileReader to read the image file
+            const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result);  // Set the base64-encoded image string in the state
+                setImage(reader.result); // Set base64 image string
                 setImagePreview(reader.result);
             };
-            reader.readAsDataURL(file);  // Convert the image to base64 format
+            reader.readAsDataURL(file);
         }
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Send the post data to the backend API
-        fetch('http://localhost:5000/api/posts', {
+        fetch('http://localhost:5001/api/posts', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },  // Set headers to accept JSON
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title, content, description, image }),
         })
-            .then((res) => res.json())  // Parse the response as JSON
+            .then((res) => res.json())
             .then(() => {
-                navigate('/');
+                navigate('/'); // Redirect after post creation
             })
             .catch((error) => console.error('Error creating post:', error));
     };
@@ -82,15 +77,14 @@ function NewPost() {
                             className="form-control media"
                             type="file"
                             id="formFile"
-                            accept="image/*"  // Restrict file input to image files
-                            onChange={handleImageChange}  // Handle image change and convert to base64
+                            accept="image/*"
+                            onChange={handleImageChange}
                         />
                     </div>
 
                     {imagePreview && (
                         <div className="image-preview">
                             <h4>Image Preview:</h4>
-                            {/* Render the image preview */}
                             <img src={imagePreview} alt="Preview" style={{ maxWidth: '350px', height: 'auto' }} />
                         </div>
                     )}

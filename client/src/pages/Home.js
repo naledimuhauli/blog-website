@@ -7,42 +7,41 @@ import beauty from '../images/beauty.jpg';
 import fashion from '../images/fashion.jpg';
 
 function Home() {
-    // State to store blog posts fetched from the server
     const [posts, setPosts] = useState([]);
-
-    // State to handle loading state while fetching posts
     const [loading, setLoading] = useState(true);
-
-    // State to handle any errors that occur during fetching
     const [error, setError] = useState(null);
 
-    // to get the image dynamically
-    // If the image starts with 'data:image', it's considered as a base64 string
-    // Otherwise, it is loaded from the /images directory in the public folder
     const getImage = (imageName) => {
-        return imageName?.startsWith('data:image') ? imageName : `/images/${imageName}`;
+        console.log('Image Name:', imageName); // Log the image name to diagnose issues
+        console.log('Type of imageName:', typeof imageName); // Log the type of imageName
+
+        // Check if imageName is a string before proceeding
+        if (typeof imageName === 'string' && imageName.trim() !== '') {
+            // Use regex to check if it's a Base64 image
+            const isBase64 = /^data:image/.test(imageName);
+            return isBase64 ? imageName : `${process.env.PUBLIC_URL}/images/${imageName}`; // Correctly reference public images for blog posts
+        }
+
+        console.warn('Invalid image name:', imageName); // Log warning for invalid image name
+        return '/path/to/default/image.jpg'; // Fallback image path if imageName is not valid
     };
 
-    // useEffect hook to fetch blog posts 
     useEffect(() => {
-        // Fetch posts from the backend API
         fetch('http://localhost:5001/api/posts')
             .then((res) => {
-                // Check if the response is OK 
                 if (!res.ok) throw new Error('Network response was not ok');
-                return res.json(); // Parse the response as JSON
+                return res.json();
             })
             .then((data) => {
-                setPosts(data);      // Set the fetched posts to state
-                setLoading(false);   // Set loading to false when done
+                setPosts(data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching posts:', error);
-                setError(error.message);  // Set the error state if an error occurs
-                setLoading(false);        // Set loading to false even if there's an error
+                setError(error.message);
+                setLoading(false);
             });
-    }, []); // Empty array means this effect runs once when the component mounts
-
+    }, []);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -73,7 +72,6 @@ function Home() {
 
                     <div className='col-12 col-md-1'></div>
 
-
                     <div id="posts" className='col-12 col-md-8 col-lg-9'>
                         {posts.length === 0 ? (
                             <p>No posts available. <Link to="/new-post">Create the first post</Link></p>
@@ -84,7 +82,7 @@ function Home() {
                                         <div className='post-card'>
                                             {post.image && (
                                                 <img
-                                                    src={getImage(post.image)}  // Use helper function to get the image
+                                                    src={getImage(post.image)}  // Use helper function to get the blog image
                                                     alt={post.title}
                                                     className='blog-img'
                                                 />

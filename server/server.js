@@ -1,73 +1,25 @@
 const express = require('express');
-const cors = require('cors'); // A middleware that allows cross-origin requests from the frontend.
-const mysql = require('mysql2'); // Importing mysql2 for database connection
-const app = express();
+const cors = require('cors'); // Middleware that allows cross-origin requests
+const mysql = require('mysql2'); // MySQL driver
+const path = require('path'); // Required for serving static files
+const app = express(); // Initialize Express app
 
-// Initializes an Express application
-app.use(cors()); // Enables CORS for all routes so that the frontend can communicate with the backend from a different domain
-app.use(express.json()); // This middleware parses incoming JSON requests, allowing the app to process JSON data sent from the frontend
+// Middleware
+app.use(cors()); // Allow frontend to communicate with backend from different domains
+app.use(express.json()); // Parse incoming JSON data
 
-// Create a MySQL connection pool
+// Create MySQL connection pool
 const db = mysql.createPool({
     host: 'localhost', // Replace with your MySQL host
-    user: 'root', // Replace with your MySQL user
+    user: 'root', // Replace with your MySQL username
     password: 'Naledim.130305', // Replace with your MySQL password
     database: 'blog_website', // Replace with your MySQL database name
 });
 
-// Route to fetch all blog posts from MySQL
-app.get('/api/posts', (req, res) => {
-    const query = 'SELECT * FROM posts'; // SQL query to fetch all posts
-    db.query(query, (err, results) => {
-        if (err) {
-            console.error('Error fetching posts:', err);
-            return res.status(500).json({ error: 'Failed to fetch posts' });
-        }
-        res.json(results);
-    });
-});
+// Serve images from the public/images directory
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-// Route to get a specific post by id from MySQL
-app.get('/api/posts/:id', (req, res) => {
-    const postId = req.params.id;
-    const query = 'SELECT * FROM posts WHERE id = ?'; // SQL query to fetch a specific post by id
-    db.query(query, [postId], (err, result) => {
-        if (err) {
-            console.error('Error fetching post:', err);
-            return res.status(500).json({ error: 'Failed to fetch post' });
-        }
-        if (result.length > 0) {
-            res.json(result[0]);
-        } else {
-            res.status(404).json({ message: 'Post not found' });
-        }
-    });
-});
-
-// Route to create a new post in MySQL
-// Route to create a new post
-app.post('/api/posts', (req, res) => {
-    const { title, content } = req.body; // Get title and content from the request body
-
-    // Validate input
-    if (!title || !content) {
-        return res.status(400).json({ message: 'Title and content are required.' });
-    }
-
-    // MySQL query to insert the new post
-    const query = 'INSERT INTO posts (title, content) VALUES (?, ?)';
-    db.query(query, [title, content], (err, result) => {
-        if (err) {
-            console.error('Error inserting post:', err);
-            return res.status(500).json({ message: 'Error creating post' });
-        }
-
-        // Respond with the new post's ID and created_at timestamp
-        res.status(201).json({ id: result.insertId, title, content, created_at: new Date() });
-    });
-});
-
-// Route to fetch all blog posts
+// Route to fetch all blog posts from MySQL, ordered by creation date
 app.get('/api/posts', (req, res) => {
     const query = 'SELECT * FROM posts ORDER BY created_at DESC';
     db.query(query, (err, results) => {
@@ -75,15 +27,83 @@ app.get('/api/posts', (req, res) => {
             console.error('Error fetching posts:', err);
             return res.status(500).json({ message: 'Error fetching posts' });
         }
-        res.json(results);
+
+        // Modify results to prepend the correct image path
+        const formattedResults = results.map(post => ({
+            ...post,
+            image: `${req.protocol}://${req.get('host')}/images/${post.image}`, // Ensure the image path is correct
+        }));
+
+        res.json(formattedResults);
     });
 });
 
+// Route to create a new post in MySQL
+app.post('/api/posts', (req, res) => {
+    const { title, content, description, image } = req.body;
 
-// Route to delete a post by id from MySQL
+    // Validate input
+    if (!title || !content) {
+        return res.status(400).json({ message: 'Title and content are required.' });
+    }
+
+    // Validate the image URL (Optional)
+    const isValidImageUrl = (url) => {
+        return /\.(jpeg|jpg|gif|png|svg)$/.test(url);
+    };
+
+    if (!isValidImageUrl(image)) {
+        return res.status(400).json({ message: 'Invalid image URL' });
+    }
+
+    // MySQL query to insert the new post
+    const query = 'INSERT INTO posts (title, content, description, image, created_at) VALUES (?, ?, ?, ?, NOW())';
+    db.query(query, [title, content, description, image], (err, result) => {
+        if (err) {
+            console.error('Error inserting post:', err);
+            return res.status(500).json({ message: 'Error creating post' });
+        }
+
+        // Respond with the new post's ID and timestamp
+        res.status(201).json({
+            id: result.insertId,
+            title,
+            content,
+            description,
+            image: `${req.protocol}://${req.get('host')}/images/${image}`, // Ensure the image path is correct
+            created_at: new Date(),
+        });
+    });
+});
+
+// Route to fetch a specific post by its ID
+app.get('/api/posts/:id', (req, res) => {
+    const postId = req.params.id;
+    const query = 'SELECT * FROM posts WHERE id = ?';
+
+    db.query(query, [postId], (err, result) => {
+        if (err) {
+            console.error('Error fetching post:', err);
+            return res.status(500).json({ error: 'Failed to fetch post' });
+        }
+        if (result.length > 0) {
+            // Prepend the image path
+            const post = {
+                ...result[0],
+                image: `${req.protocol}://${req.get('host')}/images/${result[0].image}`,
+            };
+            res.json(post);
+        } else {
+            res.status(404).json({ message: 'Post not found' });
+        }
+    });
+});
+
+// Route to delete a post by its ID
 app.delete('/api/posts/:id', (req, res) => {
     const postId = req.params.id;
-    const query = 'DELETE FROM posts WHERE id = ?'; // SQL query to delete a post by id
+    const query = 'DELETE FROM posts WHERE id = ?';
+
     db.query(query, [postId], (err, result) => {
         if (err) {
             console.error('Error deleting post:', err);
@@ -97,38 +117,35 @@ app.delete('/api/posts/:id', (req, res) => {
     });
 });
 
-// Route to add a comment to a post in MySQL
+// Route to add a comment to a post
 app.post('/api/posts/:postId/comments', (req, res) => {
-    const { postId } = req.params; // Get postId from the URL
-    const { username, comment } = req.body; // Get username and comment from the request body
+    const { postId } = req.params;
+    const { username, comment } = req.body;
 
-    // Validate that both username and comment are provided
+    // Validate input
     if (!username || !comment) {
         return res.status(400).json({ message: 'Username and comment are required.' });
     }
 
-    // SQL query to insert a comment
+    // Insert comment into the database
     const query = 'INSERT INTO comments (post_id, username, comment, date) VALUES (?, ?, ?, NOW())';
-    // Use NOW() to let the database handle the current timestamp
-
-    // Execute the query and pass the postId, username, and comment
     db.query(query, [postId, username, comment], (err, result) => {
         if (err) {
             console.error('Error adding comment:', err);
             return res.status(500).json({ error: 'Failed to add comment' });
         }
 
-        // Respond with the newly created comment, including the auto-generated id
+        // Respond with the newly created comment
         const newComment = { id: result.insertId, post_id: postId, username, comment, date: new Date() };
         res.status(201).json(newComment);
     });
 });
 
-// Route to delete a comment by index from MySQL
+// Route to delete a comment by ID
 app.delete('/api/posts/:postId/comments/:commentId', (req, res) => {
     const { postId, commentId } = req.params;
+    const query = 'DELETE FROM comments WHERE id = ? AND post_id = ?';
 
-    const query = 'DELETE FROM comments WHERE id = ? AND post_id = ?'; // SQL query to delete a comment by id and postId
     db.query(query, [commentId, postId], (err, result) => {
         if (err) {
             console.error('Error deleting comment:', err);
@@ -142,7 +159,7 @@ app.delete('/api/posts/:postId/comments/:commentId', (req, res) => {
     });
 });
 
-// Start the server on port 5000
+// Start the server on port 5001
 const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

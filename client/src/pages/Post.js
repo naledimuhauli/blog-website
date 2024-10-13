@@ -27,7 +27,7 @@ function Post() {
     // useEffect hook to fetch post data 
     useEffect(() => {
         // Fetch the post data by its ID
-        fetch(`http://localhost:5000/api/posts/${id}`)
+        fetch(`http://localhost:5001/api/posts/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setPost(data);
@@ -46,7 +46,7 @@ function Post() {
         e.preventDefault();
 
         // Send a POST request to add a new comment
-        fetch(`http://localhost:5000/api/posts/${id}/comments`, {
+        fetch(`http://localhost:5001/api/posts/${id}/comments`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, comment: newComment }),  // Send the username and comment
@@ -66,7 +66,7 @@ function Post() {
     // Handle the deletion of a comment
     const handleDeleteComment = (index) => {
         // Send a DELETE request to remove the comment by its index
-        fetch(`http://localhost:5000/api/posts/${id}/comments/${index}`, {
+        fetch(`http://localhost:5001/api/posts/${id}/comments/${index}`, {
             method: 'DELETE',
         })
             .then((res) => res.json())
