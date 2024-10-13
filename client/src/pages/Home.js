@@ -26,7 +26,7 @@ function Home() {
     // useEffect hook to fetch blog posts 
     useEffect(() => {
         // Fetch posts from the backend API
-        fetch('http://localhost:5000/api/posts')
+        fetch('http://localhost:5001/api/posts')
             .then((res) => {
                 // Check if the response is OK 
                 if (!res.ok) throw new Error('Network response was not ok');
