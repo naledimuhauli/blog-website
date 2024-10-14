@@ -16,10 +16,46 @@ html {
     text-align: center;
 }
 
+.post-card {
+    height: 550px;
+    position: relative;
+    border: 1px solid rgb(250, 247, 250);
+    padding: 20px;
+    box-shadow: 0px 4px 15px rgba(19, 19, 19, 0.5);
+}
+
+.image-container {
+    position: relative;
+}
+
+.desc {
+    height: 160px;
+}
+
+.post-card .link-btn {
+    display: block;
+    margin: auto;
+    align-items: center;
+    padding: 5px 40px;
+    background: rgb(175, 142, 175);
+    color: black;
+    position: absolute;
+    top: -10px;
+    left: 110px;
+    border: none;
+    cursor: pointer;
+}
+
+
+.link-btn a {
+    text-decoration: none;
+    color: black;
+}
+
 .blog-img {
-    height: 200px;
-    width: 200px;
-    border-radius: 30px;
+    height: 300px;
+    width: 350px;
+    border-radius: 1px;
     display: block;
     margin: auto;
     align-items: center;
@@ -31,13 +67,14 @@ html {
     font-family: poppins;
     font-weight: 600;
     margin-left: 30px;
+    text-align: center;
 
 }
 
 .homepage .blog-p {
     font-weight: 500;
     color: rgb(95, 94, 94);
-    font-size: 16px;
+    font-size: 20px;
     margin-left: 30px;
     margin-bottom: 50px;
 }

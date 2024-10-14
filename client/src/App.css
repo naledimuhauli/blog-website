@@ -11,15 +11,15 @@ body {
 }
 
 .background {
-  background-image: url(./images/background.gif);
+  /* background-image: url(./images/background.gif); */
+  background-color: rgb(192, 176, 192);
   background-size: cover;
   background-repeat: no-repeat;
   padding: 280px;
   background-position: 10;
   height: 100%;
   /* margin: 50px; */
-  filter: blur(4px);
-  border: 1px solid black;
+  /* filter: blur(4px); */
 }
 
 .content {
@@ -29,17 +29,17 @@ body {
   transform: translate(-50%, -50%);
   z-index: 2;
   width: 45%;
-  padding: 40px 0;
+  padding: 60px 0;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #990404;
+  background-color: rgba(41, 38, 38, 0.5);
+  color: #070707;
   font-weight: bold;
-  border: 15px inset #fff;
+  /* border: 15px inset #fff; */
   font-family: poppins;
 }
 
 .content .heading {
-  font-size: 50px;
+  font-size: 80px;
 }
 
 .content p {

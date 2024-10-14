@@ -51,7 +51,7 @@ function Home() {
         <div className='homepage'>
             <Hero />
 
-            <h1 className='blog' id="categories">Vogue Vibes <strong>Blog</strong></h1>
+            <h1 className='blog' id="categories">New Blog Posts!</h1>
 
             <div className='container'>
                 <div className='row'>
@@ -80,26 +80,33 @@ function Home() {
                         ) : (
                             <div className='row'>
                                 {posts.map((post) => (
-                                    <div className='col-12 col-md-6 col-lg-4 mb-4' key={post.id}>
+                                    <div className='col-12 col-md-6 col-lg-6 mb-4' key={post.id}>
                                         <div className='post-card'>
-                                            {post.image && (
-                                                <img
-                                                    src={getImage(post.image)}  // Use helper function to get the image
-                                                    alt={post.title}
-                                                    className='blog-img'
-                                                />
-                                            )}
                                             <h3 className='blog-h1'>{post.title}</h3>
-                                            <p className='blog-p'>
-                                                {post.description}
-                                                <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: "black" }}>
-                                                    Read More..
-                                                </Link>
-                                            </p>
+                                            <div className="desc">
+                                                <p className='blog-p'>
+                                                    {post.description}
+                                                </p>
+                                            </div>
+                                            {post.image && (
+                                                <div className='image-container'>
+                                                    <img
+                                                        src={getImage(post.image)}
+                                                        alt={post.title}
+                                                        className='blog-img'
+                                                    />
+                                                    <button className='link-btn'>
+                                                        <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                                                            Read Now
+                                                        </Link>
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
                             </div>
+
                         )}
                         <Link to="/new-post">
                             <button className='new-post'>Create New Post</button>
