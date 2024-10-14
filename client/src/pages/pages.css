@@ -28,9 +28,7 @@ html {
     position: relative;
 }
 
-.desc {
-    height: 160px;
-}
+
 
 .post-card .link-btn {
     display: block;
@@ -53,12 +51,76 @@ html {
 }
 
 .blog-img {
-    height: 300px;
-    width: 350px;
+    height: 280px;
+    width: 300px;
     border-radius: 1px;
     display: block;
     margin: auto;
     align-items: center;
+}
+
+/* Responsive button adjustments */
+@media (max-width: 968px) {
+    .post-card .link-btn {
+        top: 2px;
+        left: 40px;
+        padding: 5px 10px;
+    }
+
+    .blog-img {
+        height: 130px;
+        width: 140px;
+        margin-top: 90px
+    }
+
+    .post-card {
+        height: 500px;
+    }
+
+    .homepage .blog-p {
+        font-weight: 500;
+        color: rgb(95, 94, 94);
+        font-size: 20px;
+        line-height: 25px;
+    }
+
+}
+
+@media (max-width: 576px) {
+    .post-card .link-btn {
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px 20px;
+    }
+}
+
+
+
+@media (max-width: 770px) {
+    .blog-img {
+        height: 250px;
+        width: 100px;
+    }
+
+    .post-card {
+        height: 550px;
+
+    }
+
+    .homepage .blog-p {
+        font-weight: 500;
+        color: rgb(95, 94, 94);
+        font-size: 20px;
+        line-height: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .blog-img {
+        height: 200px;
+        width: 210;
+    }
 }
 
 .homepage .blog-h1 {
@@ -119,7 +181,6 @@ html {
     .blog-img {
         height: 200px;
         width: 200px;
-        border-radius: 30px;
         display: block;
         margin: auto;
         align-items: center;

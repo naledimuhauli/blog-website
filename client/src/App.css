@@ -15,20 +15,23 @@ body {
   background-color: rgb(192, 176, 192);
   background-size: cover;
   background-repeat: no-repeat;
-  padding: 280px;
-  background-position: 10;
+  padding: 100px;
+  /* background-position: 10; */
   height: 100%;
   /* margin: 50px; */
   /* filter: blur(4px); */
 }
 
 .content {
-  position: absolute;
+  /* position: absolute;
   top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 50%; */
+  display: block;
+  margin: auto;
+  align-items: center;
+  /* transform: translate(-50%, -50%); */
   z-index: 2;
-  width: 45%;
+  /* width: 45%; */
   padding: 60px 0;
   text-align: center;
   background-color: rgba(41, 38, 38, 0.5);
@@ -49,20 +52,22 @@ body {
   font-size: 20px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
   .content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
     z-index: 1.5;
     width: 45%;
     padding: 10px;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #990404;
-    font-weight: bold;
-    border: 10px inset #fff;
+  }
+}
+
+@media (max-width: 950px) {
+  .content {
+    z-index: 1.5;
+    width: 45%;
+    padding: 10px;
+    text-align: center;
   }
 
   .content .heading {
@@ -73,22 +78,20 @@ body {
     padding: 0 8%;
     line-height: 1.5;
     color: #fcf8f8;
-    font-size: 15px;
+    font-size: 20px;
   }
 
   .background {
-    padding: 200px;
+    padding: 50px;
     background-position: 10;
     height: 100%;
     /* margin: 50px; */
-    filter: blur(4px);
     border: 1px solid black;
   }
 
   @media (max-width: 768px) {
     .content {
       width: 70%;
-      top: 30%;
       padding: 30px 0;
       border-width: 10px;
     }
@@ -102,11 +105,9 @@ body {
     }
   }
 
-  /* Styling for small-sized devices (mobile phones) */
   @media (max-width: 480px) {
     .content {
       width: 90%;
-      /* Full width on smaller screens */
       padding: 20px 0;
       /* Less padding for compact look */
       font-size: 14px;
@@ -115,8 +116,6 @@ body {
       /* Thinner border */
     }
   }
-
-
 }
 
 .about-section {
