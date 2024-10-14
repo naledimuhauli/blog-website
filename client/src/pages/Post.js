@@ -114,7 +114,7 @@ function Post() {
                                 src={getImage(post.image)}
                                 alt={post.title}
                                 className="img-fluid post-img"
-                                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+                                style={{ width: '500px', height: '500px', objectFit: 'cover' }}
                             />
                         </div>
                     )}
