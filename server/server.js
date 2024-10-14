@@ -1,6 +1,6 @@
 const express = require('express');
-const cors = require('cors'); // A middleware that allows cross-origin requests from the frontend.
-const mysql = require('mysql2'); // Importing mysql2 for database connection
+const cors = require('cors');
+const mysql = require('mysql2');
 const app = express();
 
 // Initializes an Express application
@@ -9,10 +9,10 @@ app.use(express.json()); // This middleware parses incoming JSON requests, allow
 
 // Create a MySQL connection pool
 const db = mysql.createPool({
-    host: 'localhost', // Replace with your MySQL host
-    user: 'root', // Replace with your MySQL user
-    password: 'Naledim.130305', // Replace with your MySQL password
-    database: 'blog_website', // Replace with your MySQL database name
+    host: 'localhost',
+    user: 'root',
+    password: 'Naledim.130305',
+    database: 'blog_website',
 });
 
 // Route to fetch all blog posts from MySQL
