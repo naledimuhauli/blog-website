@@ -23,7 +23,7 @@ app.get('/api/posts', (req, res) => {
             console.error('Error fetching posts:', err);
             return res.status(500).json({ error: 'Failed to fetch posts' });
         }
-        res.json(results);
+        res.json(results); // Responds with all the posts
     });
 });
 
@@ -37,9 +37,9 @@ app.get('/api/posts/:id', (req, res) => {
             return res.status(500).json({ error: 'Failed to fetch post' });
         }
         if (result.length > 0) {
-            res.json(result[0]);
+            res.json(result[0]); // If post is found, return it
         } else {
-            res.status(404).json({ message: 'Post not found' });
+            res.status(404).json({ message: 'Post not found' }); // If post not found, return a 404 response
         }
     });
 });
@@ -97,7 +97,9 @@ app.post('/api/posts/:postId/comments', (req, res) => {
         }
 
         // Respond with the newly created comment, including the auto-generated id
-        const newComment = { id: result.insertId, post_id: postId, username, comment, date: new Date() };
+        let date = new Date();
+        let formattedDate = date.toLocaleString();
+        const newComment = { id: result.insertId, post_id: postId, username, comment, date: formattedDate };
         res.status(201).json(newComment);
     });
 });
@@ -120,7 +122,7 @@ app.delete('/api/posts/:postId/comments/:commentId', (req, res) => {
     });
 });
 
-// Start the server on port 5000
+// Start the server on port 5001
 const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
