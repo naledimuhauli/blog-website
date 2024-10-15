@@ -81,7 +81,7 @@ function Post() {
     // Handle the deletion of the post
     const handleDeletePost = () => {
         // Send a DELETE request to remove the post by its ID
-        fetch(`http://localhost:5000/api/posts/${id}`, {
+        fetch(`http://localhost:5001/api/posts/${id}`, {
             method: 'DELETE',
         })
             .then((res) => res.json())

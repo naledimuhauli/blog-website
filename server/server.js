@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
-const app = express();
 
-// Initializes an Express application
+
+const app = express();// Initializes an Express application
 app.use(cors()); // Enables CORS for all routes so that the frontend can communicate with the backend from a different domain
 app.use(express.json()); // This middleware parses incoming JSON requests, allowing the app to process JSON data sent from the frontend
 
-// Create a MySQL connection pool
+// MySQL connection pool
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
