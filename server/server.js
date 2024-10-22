@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
+require('dotenv').config();
+
 
 
 const app = express();// Initializes an Express application
@@ -9,10 +11,10 @@ app.use(express.json()); // This middleware parses incoming JSON requests, allow
 
 // MySQL connection pool
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'Naledim.130305',
-    database: 'blog_website',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 // Route to fetch all blog posts from MySQL
